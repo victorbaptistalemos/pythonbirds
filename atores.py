@@ -91,9 +91,9 @@ class Passaro(Ator):
         """
         Método que executa lógica de colisão com o chão. Toda vez que y for menor ou igual a 0,
         o status dos Passaro deve ser alterado para destruido, bem como o seu caracter
-
         """
-        pass
+        if self.y <= 0:
+            self.status = DESTRUIDO
 
     def calcular_posicao(self, tempo):
         """
@@ -105,20 +105,25 @@ class Passaro(Ator):
         :param tempo: tempo de jogo a ser calculada a posição
         :return: posição x, y
         """
-        if self.foi_lancado():
+        if self._esta_voando():
             dif_tempo = tempo - self._tempo_de_lancamento
             self._calcular_posicao_vertical(dif_tempo)
+            self._calcular_posicao_horizontal(dif_tempo)
         return super().calcular_posicao(tempo)
+
+    def _esta_voando(self):
+        return self.foi_lancado() and self.status == ATIVO
 
     def _calcular_posicao_vertical(self, dif_tempo):
         y_atual = self._y_inicial
-        radiano = math.radians(self._angulo_de_lancamento)
-        y_atual += self.velocidade_escalar * math.sin(radiano) * dif_tempo
+        y_atual += self.velocidade_escalar * math.sin(self._angulo_de_lancamento) * dif_tempo
         y_atual -= GRAVIDADE / 2 * dif_tempo ** 2
         self.y = y_atual
 
-
-
+    def _calcular_posicao_horizontal(self, dif_tempo):
+        x_atual = self._x_inicial
+        x_atual += self.velocidade_escalar * math.cos(self._angulo_de_lancamento) * dif_tempo
+        self.x = x_atual
 
     def lancar(self, angulo, tempo_de_lancamento):
         """
@@ -129,9 +134,8 @@ class Passaro(Ator):
         :param tempo_de_lancamento:
         :return:
         """
-        self._angulo_de_lancamento = angulo
+        self._angulo_de_lancamento = math.radians(angulo)
         self._tempo_de_lancamento = tempo_de_lancamento
-
 
 
 class PassaroAmarelo(Passaro):
