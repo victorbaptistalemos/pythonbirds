@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 
+import math
+
 DESTRUIDO = 'Destruido'
 ATIVO = 'Ativo'
 GRAVIDADE = 10  # m/s^2
@@ -96,18 +98,27 @@ class Passaro(Ator):
     def calcular_posicao(self, tempo):
         """
         Método que cálcula a posição do passaro de acordo com o tempo.
-
         Antes do lançamento o pássaro deve retornar o valor de sua posição inicial
-
         Depois do lançamento o pássaro deve calcular de acordo com sua posição inicial, velocidade escalar,
         ângulo de lancamento, gravidade (constante GRAVIDADE) e o tempo do jogo.
-
         Após a colisão, ou seja, ter seus status destruido, o pássaro deve apenas retornar a última posição calculada.
-
         :param tempo: tempo de jogo a ser calculada a posição
         :return: posição x, y
         """
-        return 1, 1
+        if self.foi_lancado():
+            dif_tempo = tempo - self._tempo_de_lancamento
+            self._calcular_posicao_vertical(dif_tempo)
+        return super().calcular_posicao(tempo)
+
+    def _calcular_posicao_vertical(self, dif_tempo):
+        y_atual = self._y_inicial
+        radiano = math.radians(self._angulo_de_lancamento)
+        y_atual += self.velocidade_escalar * math.sin(radiano) * dif_tempo
+        y_atual -= GRAVIDADE / 2 * dif_tempo ** 2
+        self.y = y_atual
+
+
+
 
     def lancar(self, angulo, tempo_de_lancamento):
         """
@@ -120,6 +131,7 @@ class Passaro(Ator):
         """
         self._angulo_de_lancamento = angulo
         self._tempo_de_lancamento = tempo_de_lancamento
+
 
 
 class PassaroAmarelo(Passaro):
