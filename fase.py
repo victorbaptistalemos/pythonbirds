@@ -84,12 +84,14 @@ class Fase:
     def calcular_pontos(self, tempo):
         """
         Lógica que retorna os pontos a serem exibidos na tela.
-
         Cada ator deve ser transformado em um Ponto.
-
-        :param tempo: tempo para o qual devem ser calculados os pontos
-        :return: objeto do tipo Ponto
         """
+        for passaro in self._passaros:
+            passaro.calcular_posicao(tempo)
+            for alvo in self._obstaculos + self._porcos:
+                passaro.colidir(alvo, self.intervalo_de_colisao)
+            passaro.colidir_com_chao()
+
         pontos = [self._transformar_em_ponto(a) for a in self._passaros+self._obstaculos+self._porcos]
 
         return pontos

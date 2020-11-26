@@ -61,10 +61,6 @@ class Porco(Ator):
     _caracter_ativo = '@'
 
 
-class DuploLancamentoExcecao(Exception):
-    pass
-
-
 class Passaro(Ator):
     velocidade_escalar = 10
 
@@ -134,3 +130,7 @@ class PassaroAmarelo(Passaro):
 
 class PassaroVermelho(Passaro):
     _caracter_ativo = 'V'
+
+
+class DuploLancamentoExcecao(Exception):
+    pass

@@ -4,9 +4,9 @@ import os
 import sys
 from os import path
 from unittest.case import TestCase
-from placa_grafica_tkinter import rodar_fase
-from atores import (Obstaculo, Porco, PassaroVermelho, PassaroAmarelo, DESTRUIDO, ATIVO, DuploLancamentoExcecao)
-from fase import Fase, Ponto, EM_ANDAMENTO, VITORIA, DERROTA
+
+from atores import (Obstaculo, DESTRUIDO, ATIVO, DuploLancamentoExcecao)
+from fase import Fase, EM_ANDAMENTO, VITORIA, DERROTA
 
 project_dir = path.dirname(__file__)
 project_dir = path.join('..')
