@@ -72,15 +72,14 @@ class Fase:
     def lancar(self, angulo, tempo):
         """
         Método que executa lógica de lançamento.
-
         Deve escolher o primeiro pássaro não lançado da lista e chamar seu método lançar
-
         Se não houver esse tipo de pássaro, não deve fazer nada
-
-        :param angulo: ângulo de lançamento
-        :param tempo: Tempo de lançamento
         """
-        pass
+        for passaro in self._passaros:
+            if not passaro.foi_lancado():
+                passaro.lancar(angulo, tempo)
+                break
+
 
     def calcular_pontos(self, tempo):
         """
