@@ -35,6 +35,22 @@ CARACTER_PARA__IMG_DCT = {'V': PASSARO_VERMELHO,
                           ' ': TRANSPARENTE}
 
 
+def inicio(fase):
+    passaros = [PassaroVermelho(30, 30), PassaroAmarelo(30, 30), PassaroAmarelo(30, 30)]
+    porcos = [Porco(750, 1), Porco(700, 1)]
+    obstaculos = [Obstaculo(310, 100)]
+
+    fase.adicionar_obstaculo(*obstaculos)
+    fase.adicionar_passaro(*passaros)
+    fase.adicionar_porco(*porcos)
+
+
+def resetar():
+    fase.resetar()
+    inicio(fase)
+    fase.status()
+
+
 def plotar(camada_de_atores, ponto):
     if ponto.caracter != ' ':
         x = ponto.x
@@ -50,7 +66,7 @@ def animar(tela, camada_de_atores, fase, passo=0.01, delta_t=0.04):
     multiplicador_rebobinar = 20
 
     def _animar():
-        tempo_de_inicio_de_animacao=time.time()
+        tempo_de_inicio_de_animacao = time.time()
 
         nonlocal tempo
         nonlocal delta_t
@@ -78,9 +94,9 @@ def animar(tela, camada_de_atores, fase, passo=0.01, delta_t=0.04):
             camada_de_atores.create_text(35, 493, text="%d°" % angulo)
             for ponto in fase.calcular_pontos(tempo):
                 plotar(camada_de_atores, ponto)
-            tempo_gasto_com_animacao= round((time.time() - tempo_de_inicio_de_animacao)*1000) # Trans
-            tempo_proxima_animacao = passo - tempo_gasto_com_animacao if passo>tempo_gasto_com_animacao else 1
-            tela.after(tempo_proxima_animacao, _animar)
+        tempo_gasto_com_animacao = round((time.time() - tempo_de_inicio_de_animacao) * 1000)  # Trans
+        tempo_proxima_animacao = passo - tempo_gasto_com_animacao if passo > tempo_gasto_com_animacao else 1
+        tela.after(tempo_proxima_animacao, _animar)
 
     def _ouvir_comandos_lancamento(evento):
         nonlocal angulo
@@ -96,25 +112,26 @@ def animar(tela, camada_de_atores, fase, passo=0.01, delta_t=0.04):
             fase.lancar(angulo, tempo)
 
     def _replay(event):
-        return
-        nonlocal tempo
-        nonlocal delta_t
-        if fase.acabou(tempo):
+        if fase.status() is not EM_ANDAMENTO:
+            nonlocal tempo
+            nonlocal delta_t
             delta_t *= -multiplicador_rebobinar
-            _animar()
-
+            resetar()
+            return
 
     def _jogar_novamente(event):
-        return
-        nonlocal tempo
-        nonlocal delta_t
-        if fase.acabou(tempo):
+        if fase.status() is not EM_ANDAMENTO:
+            nonlocal tempo
+            nonlocal delta_t
             tempo = delta_t
-            fase.resetar()
-            _animar()
+            resetar()
+            return
 
     def _finalizar(event):
-        root.destroy()
+        if event.keysym == 'Escape':
+            root.destroy()
+        elif event.keysym == '3' and fase.status() is not EM_ANDAMENTO:
+            root.destroy()
 
     camada_de_atores.pack()
     _animar()
@@ -143,11 +160,5 @@ def rodar_fase(fase):
 
 if __name__ == '__main__':
     fase = Fase(intervalo_de_colisao=32)
-    passaros = [PassaroVermelho(30, 30), PassaroAmarelo(30, 30), PassaroAmarelo(30, 30)]
-    porcos = [Porco(750, 1), Porco(700, 1)]
-    obstaculos = [Obstaculo(310, 100)]
-
-    fase.adicionar_obstaculo(*obstaculos)
-    fase.adicionar_passaro(*passaros)
-    fase.adicionar_porco(*porcos)
+    inicio(fase)
     rodar_fase(fase)
