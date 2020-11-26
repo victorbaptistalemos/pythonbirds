@@ -99,7 +99,7 @@ class AtorTestes(TestCase):
         self.assert_nao_colisao(Ator(1, 3), ator)
 
     def test_caracter(self):
-        'Teste de caracter para status ATIVO e DESTRUIDO'
+        """Teste de caracter para status ATIVO e DESTRUIDO"""
         ator = Ator()
         self.assertEqual('A', ator.caracter())
         outro_ator_na_mesma_posicao = Ator()
@@ -142,6 +142,7 @@ class ObstaculoTestes(TestCase):
     """
     Esperado '0' como caracter de obstáculo ativo e ' ' como caracter de obstáculo destruído
     """
+
     def teste_status(self):
         obstaculo = Obstaculo()
         self.assertEqual('O', obstaculo.caracter())
@@ -154,6 +155,7 @@ class PorcoTestes(TestCase):
     """
     Esperado '@' como caracter de porco ativo e '+' como caracter de porco destruido
     """
+
     def teste_status(self):
         porco = Porco()
         self.assertEqual('@', porco.caracter())
@@ -167,7 +169,6 @@ class PassaroBaseTests(TestCase):
     Classe base para teste de passaros.
     Essa classe não contèm nenhum teste, serve apenas para encapsular a lógica de asserção de posição de passaros
     vermelhos e também dos amarelos.
-
     """
 
     def assert_passaro_posicao(self, x_esperado, y_esperado, status_esperado, passaro, tempo):
@@ -198,10 +199,8 @@ class PassaroVermelhoTests(PassaroBaseTests):
         passaro_vermelho.colidir(outro_ator_na_mesma_posicao)
         self.assertEqual('v', passaro_vermelho.caracter())
 
-
     def teste_velocidade_escalar(self):
         self.assertEqual(20, PassaroVermelho.velocidade_escalar)
-
 
     def teste_foi_lancado(self):
         """
@@ -260,8 +259,6 @@ class PassaroAmareloTests(PassaroBaseTests):
         """
         passaro_amarelo = PassaroAmarelo(1, 1)
         passaro_amarelo.lancar(90, 2)  # passaro lancado a 90 graus no tempo 2 segundos
-
-
 
         # subindo
 
@@ -755,6 +752,6 @@ class PassaroAmareloTests(PassaroBaseTests):
         self.assert_passaro_posicao(1, y, ATIVO, passaro, tempo)
 
 
-if __name__=='__main__':
-    teste= AtorTestes()
+if __name__ == '__main__':
+    teste = AtorTestes()
     teste.teste_colisao_entre_atores_ativos()

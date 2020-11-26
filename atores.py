@@ -63,7 +63,7 @@ class Porco(Ator):
 
 
 class Passaro(Ator):
-    velocidade_escalar = 10
+    velocidade_escalar = None
 
     def __init__(self, x=0, y=0):
         """
@@ -126,11 +126,14 @@ class Passaro(Ator):
 
 
 class PassaroAmarelo(Passaro):
-    pass
+    velocidade_escalar = 30
+    _caracter_destruido = 'a'
 
 
 class PassaroVermelho(Passaro):
+    velocidade_escalar = 20
     _caracter_ativo = 'V'
+    _caracter_destruido = 'v'
 
 
 class DuploLancamentoExcecao(Exception):
