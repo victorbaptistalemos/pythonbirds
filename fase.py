@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+from atores import ATIVO
 
 VITORIA = 'VITORIA'
 DERROTA = 'DERROTA'
@@ -24,54 +23,52 @@ class Ponto:
 
 class Fase:
     def __init__(self, intervalo_de_colisao=1):
-        """
-        Método que inicializa uma fase.
-
-        :param intervalo_de_colisao:
-        """
+        """Método que inicializa uma fase."""
         self.intervalo_de_colisao = intervalo_de_colisao
         self._passaros = []
         self._porcos = []
         self._obstaculos = []
 
     def adicionar_obstaculo(self, *obstaculos):
-        """
-        Adiciona obstáculos em uma fase
-
-        :param obstaculos:
-        """
+        """Adiciona obstáculos em uma fase"""
         self._obstaculos.extend(obstaculos)
 
     def adicionar_porco(self, *porcos):
-        """
-        Adiciona porcos em uma fase
-
-        :param porcos:
-        """
+        """Adiciona porcos em uma fase"""
         self._porcos.extend(porcos)
 
-    def adicionar_passaro(self, *passaros):
-        """
-        Adiciona pássaros em uma fase
+    def _ha_porcos(self):
+        """Verifica se ainda há porcos em uma fase"""
+        for porco in self._porcos:
+            if porco.status == ATIVO:
+                return True
+        return False
 
-        :param passaros:
-        """
+    def adicionar_passaro(self, *passaros):
+        """Adiciona pássaros em uma fase"""
         self._passaros.extend(passaros)
+
+    def _ha_passaros(self):
+        for passaro in self._passaros:
+            if passaro.status == ATIVO:
+                return True
+        return False
 
     def status(self):
         """
         Método que indica com mensagem o status do jogo
-
         Se o jogo está em andamento (ainda tem porco ativo e pássaro ativo), retorna essa mensagem.
-
         Se o jogo acabou com derrota (ainda existe porco ativo), retorna essa mensagem
-
         Se o jogo acabou com vitória (não existe porco ativo), retorna essa mensagem
-
-        :return:
         """
-        return EM_ANDAMENTO
-
+        
+        if not self._ha_porcos():
+            return VITORIA
+        elif self._ha_passaros():
+            return EM_ANDAMENTO
+        else:
+            return DERROTA
+        
     def lancar(self, angulo, tempo):
         """
         Método que executa lógica de lançamento.

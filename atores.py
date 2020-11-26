@@ -11,7 +11,7 @@ class Ator:
     """
     Classe que representa um ator. Ele representa um ponto cartesiano na tela.
     """
-    _caracter_ativo = ''
+    _caracter_ativo = 'A'
     _caracter_destruido = ' '
 
     def __init__(self, x=0, y=0):
@@ -129,7 +129,7 @@ class Passaro(Ator):
 
 
 class PassaroAmarelo(Passaro):
-    _caracter_ativo = 'A'
+    pass
 
 
 class PassaroVermelho(Passaro):
